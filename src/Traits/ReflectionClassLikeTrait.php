@@ -448,7 +448,7 @@ trait ReflectionClassLikeTrait
             $extendsNode = $hasExtends ? $this->classLikeNode->$extendsField : null;
             if ($extendsNode instanceof FullyQualified) {
                 $extendsName = $extendsNode->toString();
-                $parentClass = class_exists($extendsName, false) ? new parent($extendsName) : new static($extendsName, null, $this->context);
+                $parentClass = $this->context->getClassReflection($extendsName);
             }
             $this->parentClass = $parentClass;
         }
@@ -578,7 +578,7 @@ trait ReflectionClassLikeTrait
     {
         if (!isset($this->traits)) {
             $traitAdaptations = [];
-            $this->traits     = ReflectionClass::collectTraitsFromClassNode($this->classLikeNode, $traitAdaptations);
+            $this->traits     = ReflectionClass::collectTraitsFromClassNode($this->classLikeNode, $traitAdaptations, $this->context);
             $this->traitAdaptations = $traitAdaptations;
         }
 
@@ -922,7 +922,7 @@ trait ReflectionClassLikeTrait
             $collector($result, $parentClass, $isParent);
         }
 
-        $interfaces = ReflectionClass::collectInterfacesFromClassNode($this->classLikeNode);
+        $interfaces = ReflectionClass::collectInterfacesFromClassNode($this->classLikeNode, $this->context);
         foreach ($interfaces as $interface) {
             $collector($result, $interface, $isParent);
         }
