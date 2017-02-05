@@ -327,7 +327,7 @@ class ReflectionMethod extends BaseReflectionMethod
      *
      * @return ClassMethod
      */
-    private function getClassMethodNode()
+    public function getClassMethodNode()
     {
         return $this->functionLikeNode;
     }
