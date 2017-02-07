@@ -229,7 +229,6 @@ class ReflectionEngine
      * @param string $namespaceName Namespace name
      *
      * @return Namespace_
-     * @throws ReflectionException
      */
     public static function parseFileNamespace($fileName, $namespaceName)
     {
@@ -240,7 +239,7 @@ class ReflectionEngine
                 continue;
             }
             $topLevelNodeName = $topLevelNode->name ? $topLevelNode->name->toString() : '';
-            if (ltrim($topLevelNodeName, '\\') === trim($namespaceName, '\\')) {
+            if ($topLevelNodeName === $namespaceName || "\\{$topLevelNodeName}" === $namespaceName) {
                 return $topLevelNode;
             }
         }
