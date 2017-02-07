@@ -36,7 +36,7 @@ class ReflectionEngine
     /**
      * @var array|Node[]
      */
-    protected static $parsedFiles = array();
+    protected static $parsedFiles = [];
 
     /**
      * @var null|integer

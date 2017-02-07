@@ -225,7 +225,7 @@ trait ReflectionFunctionLikeTrait
         $nodeTraverser->addVisitor($variablesCollector);
 
         /* @see https://github.com/nikic/PHP-Parser/issues/235 */
-        $nodeTraverser->traverse($this->functionLikeNode->getStmts() ?: array());
+        $nodeTraverser->traverse($this->functionLikeNode->getStmts() ?: []);
 
         return $variablesCollector->getStaticVariables();
     }
@@ -279,7 +279,7 @@ trait ReflectionFunctionLikeTrait
         $nodeTraverser->addVisitor($nodeDetector);
 
         /* @see https://github.com/nikic/PHP-Parser/issues/235 */
-        $nodeTraverser->traverse($this->functionLikeNode->getStmts() ?: array());
+        $nodeTraverser->traverse($this->functionLikeNode->getStmts() ?: []);
 
         return $nodeDetector->isGenerator();
     }

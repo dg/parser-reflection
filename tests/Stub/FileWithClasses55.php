@@ -21,7 +21,7 @@ final class FinalClass
     public $args = [];
     public function __construct($a = null, &$b = null)
     {
-        $this->args = array_slice(array($a, &$b), 0, func_num_args());
+        $this->args = array_slice([$a, &$b], 0, func_num_args());
     }
 }
 

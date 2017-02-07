@@ -58,7 +58,7 @@ class ReflectionClass extends InternalReflectionClass
         $isInterface    = $classLikeNode instanceof Interface_;
         $interfaceField = $isInterface ? 'extends' : 'implements';
         $hasInterfaces  = in_array($interfaceField, $classLikeNode->getSubNodeNames());
-        $implementsList = $hasInterfaces ? $classLikeNode->$interfaceField : array();
+        $implementsList = $hasInterfaces ? $classLikeNode->$interfaceField : [];
         if ($implementsList) {
             foreach ($implementsList as $implementNode) {
                 if ($implementNode instanceof FullyQualified) {
@@ -111,9 +111,9 @@ class ReflectionClass extends InternalReflectionClass
      */
     public function ___debugInfo()
     {
-        return array(
+        return [
             'name' => $this->getName()
-        );
+        ];
     }
 
     /**

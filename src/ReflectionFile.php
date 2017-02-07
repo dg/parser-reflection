@@ -137,7 +137,7 @@ class ReflectionFile
      */
     private function findFileNamespaces()
     {
-        $namespaces = array();
+        $namespaces = [];
 
         // namespaces can be only top-level nodes, so we can scan them directly
         foreach ($this->topLevelNodes as $topLevelNode) {

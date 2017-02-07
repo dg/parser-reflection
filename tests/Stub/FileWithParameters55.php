@@ -29,7 +29,7 @@ namespace Go\ParserReflection\Stub {
 
     function miscParameters(
         array $arrayParam,
-        array $arrayParamWithDefault = array(1, 2, 3),
+        array $arrayParamWithDefault = [1, 2, 3],
         array $arrayNullable = null,
         callable $callableParam,
         callable $callableNullable = null,

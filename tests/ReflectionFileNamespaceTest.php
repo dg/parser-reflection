@@ -77,7 +77,7 @@ class ReflectionFileNamespaceTest extends \PHPUnit_Framework_TestCase
         $reflectionFileNamespace = $reflectionFile->getFileNamespace('');
 
         $this->assertSame(
-            array(
+            [
                 // Scalar types are handled.
                 'INT_CONST' => 5,
                 'STRING_CONST' => 'text',
@@ -86,7 +86,7 @@ class ReflectionFileNamespaceTest extends \PHPUnit_Framework_TestCase
                 // Expressions are handled partially.
                 'EXPRESSION_CONST' => false,
                 'FUNCTION_CONST' => null,
-            ),
+            ],
             $reflectionFileNamespace->getConstants(true)
         );
     }

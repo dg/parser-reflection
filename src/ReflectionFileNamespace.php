@@ -313,7 +313,7 @@ class ReflectionFileNamespace
      */
     private function findClasses()
     {
-        $classes       = array();
+        $classes       = [];
         $namespaceName = $this->getName();
         // classes can be only top-level nodes in the namespace, so we can scan them directly
         foreach ($this->namespaceNode->stmts as $namespaceLevelNode) {
@@ -336,7 +336,7 @@ class ReflectionFileNamespace
      */
     private function findFunctions()
     {
-        $functions     = array();
+        $functions     = [];
         $namespaceName = $this->getName();
 
         // functions can be only top-level nodes in the namespace, so we can scan them directly
@@ -362,7 +362,7 @@ class ReflectionFileNamespace
      */
     private function findConstants($withDefined = false)
     {
-        $constants        = array();
+        $constants        = [];
         $expressionSolver = new NodeExpressionResolver($this);
 
         // constants can be only top-level nodes in the namespace, so we can scan them directly
