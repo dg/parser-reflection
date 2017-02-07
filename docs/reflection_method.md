@@ -12,5 +12,5 @@ List of methods, that require method and a corresponding class to be loaded
 - ReflectionMethod::invoke — Invokes method
 - ReflectionMethod::invokeArgs — Invokes method args
 - ReflectionMethod::setAccessible — Set method accessibility
-  
+
 [0]: http://php.net/manual/en/class.reflectionmethod.php

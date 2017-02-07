@@ -29,7 +29,7 @@ Usage
 
 ### Initialization
 
-Prior to the first use library can be optionally initialized. If you use Composer for installing packages and loading classes, 
+Prior to the first use library can be optionally initialized. If you use Composer for installing packages and loading classes,
 then you shouldn't worry about initialization, library will be initialized automatically.
 
 If project uses a custom autoloader then you should follow the next steps:
@@ -64,7 +64,7 @@ foreach ($fileNameSpaces as $namespace) {
         foreach ($class->getMethods() as $method) {
             echo "Found class method: ", $class->getName(), '::', $method->getName(), PHP_EOL;
         }
-        
+
         // ...all properties in the class
         foreach ($class->getProperties() as $property) {
             echo "Found class property: ", $class->getName(), '->', $property->getName(), PHP_EOL;

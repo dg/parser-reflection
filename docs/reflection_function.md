@@ -11,5 +11,5 @@ List of methods, that require function to be loaded
 - ReflectionFunction::getClosure — Returns a dynamically created closure for the function
 - ReflectionFunction::invoke — Invokes function
 - ReflectionFunction::invokeArgs — Invokes function args
-  
+
 [0]: http://php.net/manual/en/class.reflectionfunction.php

@@ -11,5 +11,5 @@ List of methods, that require property and a corresponding class to be loaded
 - ReflectionProperty::setAccessible — Set property accessibility
 - ReflectionProperty::setValue — Set property value
 
-  
+
 [0]: http://php.net/manual/en/class.reflectionproperty.php

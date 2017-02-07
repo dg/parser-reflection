@@ -12,5 +12,5 @@ List of methods, that require class to be loaded
 - ReflectionClass::newInstanceArgs — Creates a new class instance from given arguments.
 - ReflectionClass::newInstanceWithoutConstructor — Creates a new class instance without invoking the constructor.
 - ReflectionClass::setStaticPropertyValue — Sets static property value
-  
+
 [0]: http://php.net/manual/en/class.reflectionclass.php
