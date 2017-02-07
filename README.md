@@ -1,17 +1,19 @@
 Parser Reflection API Library
 -----------------
 
+This is fork of great [goaop/parser-reflection](https://github.com/goaop/parser-reflection) library with some modifications.
+
 Parser Reflection API library provides a set of classes that extend original internal Reflection classes, but powered by [PHP-Parser](https://github.com/nikic/PHP-Parser) library thus allowing to create a reflection instance without loading classes into the memory.
 
 This library can be used for analysing the source code for PHP versions 5.5, 5.6, 7.0; for automatic proxy creation and much more.
 
-[![Build Status](https://scrutinizer-ci.com/g/goaop/parser-reflection/badges/build.png?b=master)](https://scrutinizer-ci.com/g/goaop/parser-reflection/build-status/master)
-[![Code Coverage](https://scrutinizer-ci.com/g/goaop/parser-reflection/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/goaop/parser-reflection/?branch=master)
-[![Total Downloads](https://img.shields.io/packagist/dt/goaop/parser-reflection.svg)](https://packagist.org/packages/goaop/parser-reflection)
-[![Daily Downloads](https://img.shields.io/packagist/dd/goaop/parser-reflection.svg)](https://packagist.org/packages/goaop/parser-reflection)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/goaop/parser-reflection/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/goaop/parser-reflection/?branch=master)
+[![Build Status](https://scrutinizer-ci.com/g/dg/parser-reflection/badges/build.png?b=master)](https://scrutinizer-ci.com/g/dg/parser-reflection/build-status/master)
+[![Code Coverage](https://scrutinizer-ci.com/g/dg/parser-reflection/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/dg/parser-reflection/?branch=master)
+[![Total Downloads](https://img.shields.io/packagist/dt/dg/parser-reflection.svg)](https://packagist.org/packages/dg/parser-reflection)
+[![Daily Downloads](https://img.shields.io/packagist/dd/dg/parser-reflection.svg)](https://packagist.org/packages/dg/parser-reflection)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/dg/parser-reflection/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/dg/parser-reflection/?branch=master)
 [![SensioLabs Insight](https://img.shields.io/sensiolabs/i/1fdfee9c-839a-4209-a2f2-42dadc859621.svg)](https://insight.sensiolabs.com/projects/1fdfee9c-839a-4209-a2f2-42dadc859621)[![Minimum PHP Version](http://img.shields.io/badge/php-%3E%3D%205.5-8892BF.svg)](https://php.net/)
-[![License](https://img.shields.io/packagist/l/goaop/parser-reflection.svg)](https://packagist.org/packages/goaop/parser-reflection)
+[![License](https://img.shields.io/packagist/l/dg/parser-reflection.svg)](https://packagist.org/packages/dg/parser-reflection)
 
 Installation
 ------------
@@ -19,10 +21,10 @@ Installation
 Library can be installed with Composer. Installation is quite easy:
 
 ```bash
-$ composer require goaop/parser-reflection
+$ composer require dg/parser-reflection
 ```
 
-Composer will install the library to your project's `vendor/goaop/parser-reflection` directory.
+Composer will install the library to your project's `vendor/dg/parser-reflection` directory.
 
 Usage
 ------------

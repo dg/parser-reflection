@@ -7,7 +7,7 @@ PHP comes with a complete reflection API that adds the ability to reverse-engine
 
 But this reflection API requires concrete element to be loaded into the memory. Once element is loaded, it can not be changed, modified or updated without special extensions.
 
-`goaop\parser-reflection` packet is a userland implementation of reflection API that is fully compatible with internal one, but doesn't require element (e.g. class or function) to be loaded into the PHP. Only the source code is required for performing the raw analysis.
+`dg\parser-reflection` packet is a userland implementation of reflection API that is fully compatible with internal one, but doesn't require element (e.g. class or function) to be loaded into the PHP. Only the source code is required for performing the raw analysis.
 
 Reference
 ---------
