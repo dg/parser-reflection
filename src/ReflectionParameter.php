@@ -91,12 +91,12 @@ class ReflectionParameter extends BaseReflectionParameter
 
         if ($this->isDefaultValueAvailable()) {
             if ($declaringFunction instanceof \ReflectionMethod) {
-                $context = $declaringFunction->getDeclaringClass();
+                $subject = $declaringFunction->getDeclaringClass();
             } else {
-                $context = $declaringFunction;
+                $subject = $declaringFunction;
             };
 
-            $expressionSolver = new NodeExpressionResolver($context);
+            $expressionSolver = new NodeExpressionResolver($subject);
             $expressionSolver->process($this->parameterNode->default);
             $this->defaultValue             = $expressionSolver->getValue();
             $this->isDefaultValueConstant   = $expressionSolver->isConstant();

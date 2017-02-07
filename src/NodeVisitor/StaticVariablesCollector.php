@@ -21,22 +21,22 @@ use PhpParser\NodeVisitorAbstract;
 class StaticVariablesCollector extends NodeVisitorAbstract
 {
     /**
-     * Reflection context, eg. ReflectionClass, ReflectionMethod, etc
+     * Reflection subject, eg. ReflectionClass, ReflectionMethod, etc
      *
      * @var mixed
      */
-    private $context;
+    private $subject;
 
     private $staticVariables = [];
 
     /**
      * Default constructor
      *
-     * @param mixed $context Reflection context, eg. ReflectionClass, ReflectionMethod, etc
+     * @param mixed $subject Reflection subject, eg. ReflectionClass, ReflectionMethod, etc
      */
-    public function __construct($context)
+    public function __construct($subject)
     {
-        $this->context = $context;
+        $this->subject = $subject;
     }
 
     /**
@@ -50,7 +50,7 @@ class StaticVariablesCollector extends NodeVisitorAbstract
         }
 
         if ($node instanceof Node\Stmt\Static_) {
-            $expressionSolver = new NodeExpressionResolver($this->context);
+            $expressionSolver = new NodeExpressionResolver($this->subject);
             $staticVariables  = $node->vars;
             foreach ($staticVariables as $staticVariable) {
                 $expr = $staticVariable->default;
