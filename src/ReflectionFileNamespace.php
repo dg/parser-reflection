@@ -75,17 +75,24 @@ class ReflectionFileNamespace
     private $fileName;
 
     /**
+     * @var ReflectionContext
+     */
+    private $context;
+
+    /**
      * File namespace constructor
      *
      * @param string          $fileName      Name of the file
      * @param string          $namespaceName Name of the namespace
      * @param Namespace_|null $namespaceNode Optional AST-node for this namespace block
+     * @param ReflectionContext $context AST parser
      */
-    public function __construct($fileName, $namespaceName, Namespace_ $namespaceNode = null)
+    public function __construct($fileName, $namespaceName, Namespace_ $namespaceNode = null, ReflectionContext $context = null)
     {
         $fileName = PathResolver::realpath($fileName);
+        $this->context = $context ?: ReflectionEngine::getReflectionContext();
         if (!$namespaceNode) {
-            $namespaceNode = ReflectionEngine::parseFileNamespace($fileName, $namespaceName);
+            $namespaceNode = $this->context->parseFileNamespace($fileName, $namespaceName);
         }
         $this->namespaceNode = $namespaceNode;
         $this->fileName      = $fileName;
@@ -322,7 +329,7 @@ class ReflectionFileNamespace
                 $className = $namespaceName ? $namespaceName .'\\' . $classShortName : $classShortName;
 
                 $namespaceLevelNode->setAttribute('fileName', $this->fileName);
-                $classes[$className] = new ReflectionClass($className, $namespaceLevelNode);
+                $classes[$className] = new ReflectionClass($className, $namespaceLevelNode, $this->context);
             }
         }
 
@@ -363,7 +370,7 @@ class ReflectionFileNamespace
     private function findConstants($withDefined = false)
     {
         $constants        = [];
-        $expressionSolver = new NodeExpressionResolver($this);
+        $expressionSolver = new NodeExpressionResolver($this, $this->context);
 
         // constants can be only top-level nodes in the namespace, so we can scan them directly
         foreach ($this->namespaceNode->stmts as $namespaceLevelNode) {

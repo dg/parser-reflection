@@ -11,6 +11,7 @@
 namespace Go\ParserReflection\ValueResolver;
 
 use Go\ParserReflection\ReflectionClass;
+use Go\ParserReflection\ReflectionContext;
 use Go\ParserReflection\ReflectionException;
 use Go\ParserReflection\ReflectionFileNamespace;
 use PhpParser\Node;
@@ -50,6 +51,11 @@ class NodeExpressionResolver
     private $subject;
 
     /**
+     * @var ReflectionContext
+     */
+    private $context;
+
+    /**
      * Flag if expression is constant
      *
      * @var bool
@@ -68,9 +74,10 @@ class NodeExpressionResolver
      */
     private $value;
 
-    public function __construct($subject)
+    public function __construct($subject, ReflectionContext $context = null)
     {
         $this->subject = $subject;
+        $this->context = $context;
     }
 
     public function getConstantName()
@@ -233,7 +240,7 @@ class NodeExpressionResolver
             if (method_exists($this->subject, 'getFileName')) {
                 $fileName      = $this->subject->getFileName();
                 $namespaceName = $this->resolveScalarMagicConstNamespace();
-                $fileNamespace = new ReflectionFileNamespace($fileName, $namespaceName);
+                $fileNamespace = new ReflectionFileNamespace($fileName, $namespaceName, null, $this->context);
                 if ($fileNamespace->hasConstant($constantName)) {
                     $constantValue = $fileNamespace->getConstant($constantName);
                     $constantName  = $fileNamespace->getName() . '\\' . $constantName;
@@ -481,7 +488,7 @@ class NodeExpressionResolver
             $fileName      = $this->subject->getFileName();
             $namespaceName = $this->resolveScalarMagicConstNamespace();
 
-            $fileNamespace = new ReflectionFileNamespace($fileName, $namespaceName);
+            $fileNamespace = new ReflectionFileNamespace($fileName, $namespaceName, null, $this->context);
             return $fileNamespace->getClass($className);
         }
 

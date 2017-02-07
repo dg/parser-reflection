@@ -13,6 +13,7 @@ namespace Go\ParserReflection\Traits;
 
 use Go\ParserReflection\NodeVisitor\GeneratorDetector;
 use Go\ParserReflection\NodeVisitor\StaticVariablesCollector;
+use Go\ParserReflection\ReflectionContext;
 use Go\ParserReflection\ReflectionParameter;
 use Go\ParserReflection\ReflectionType;
 use PhpParser\Node\Expr\Closure;
@@ -45,6 +46,11 @@ trait ReflectionFunctionLikeTrait
      * @var array|ReflectionParameter[]
      */
     protected $parameters;
+
+    /**
+     * @var ReflectionContext
+     */
+    private $context;
 
     /**
      * {@inheritDoc}
@@ -160,7 +166,8 @@ trait ReflectionFunctionLikeTrait
                     $parameterNode->name,
                     $parameterNode,
                     $parameterIndex,
-                    $this
+                    $this,
+                    $this->context
                 );
                 $parameters[] = $reflectionParameter;
             }
@@ -221,7 +228,7 @@ trait ReflectionFunctionLikeTrait
     public function getStaticVariables()
     {
         $nodeTraverser      = new NodeTraverser(false);
-        $variablesCollector = new StaticVariablesCollector($this);
+        $variablesCollector = new StaticVariablesCollector($this, $this->context);
         $nodeTraverser->addVisitor($variablesCollector);
 
         /* @see https://github.com/nikic/PHP-Parser/issues/235 */

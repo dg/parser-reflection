@@ -44,17 +44,20 @@ class ReflectionMethod extends BaseReflectionMethod
      * @param string $methodName Name of the method
      * @param ClassMethod $classMethodNode AST-node for method
      * @param ReflectionClass $declaringClass Optional declaring class
+     * @param ReflectionContext $context AST parser
      */
     public function __construct(
         $className,
         $methodName,
         ClassMethod $classMethodNode = null,
-        ReflectionClass $declaringClass = null
+        ReflectionClass $declaringClass = null,
+        ReflectionContext $context = null
     ) {
         //for some reason, ReflectionMethod->getNamespaceName in php always returns '', so we shouldn't use it too
         $this->className        = $className;
         $this->declaringClass   = $declaringClass;
-        $this->functionLikeNode = $classMethodNode ?: ReflectionEngine::parseClassMethod($className, $methodName);
+        $this->context          = $context ?: ReflectionEngine::getReflectionContext();
+        $this->functionLikeNode = $classMethodNode ?: $this->context->parseClassMethod($className, $methodName);
 
         // Let's unset original read-only properties to have a control over them via __get
         unset($this->name, $this->class);
@@ -281,10 +284,11 @@ class ReflectionMethod extends BaseReflectionMethod
      *
      * @param ClassLike $classLikeNode Class-like node
      * @param ReflectionClass $reflectionClass Reflection of the class
+     * @param ReflectionContext $context AST parser
      *
      * @return array|ReflectionMethod[]
      */
-    public static function collectFromClassNode(ClassLike $classLikeNode, ReflectionClass $reflectionClass)
+    public static function collectFromClassNode(ClassLike $classLikeNode, ReflectionClass $reflectionClass, ReflectionContext $context)
     {
         $methods = [];
 
@@ -297,7 +301,8 @@ class ReflectionMethod extends BaseReflectionMethod
                     $reflectionClass->name,
                     $methodName,
                     $classLevelNode,
-                    $reflectionClass
+                    $reflectionClass,
+                    $context
                 );
             }
         }

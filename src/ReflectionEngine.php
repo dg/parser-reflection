@@ -18,7 +18,7 @@ class ReflectionEngine
     /**
      * @var null|ReflectionContext
      */
-    protected static $reflectionParser = null;
+    protected static $context = null;
 
     /**
      * @var null|LocatorInterface
@@ -50,13 +50,21 @@ class ReflectionEngine
     public static function init(LocatorInterface $locator)
     {
         self::$locator = $locator;
-        self::$reflectionParser = new ReflectionContext($locator);
-        self::$reflectionParser->initStaticEngine(
+        self::$context = new ReflectionContext($locator);
+        self::$context->initStaticEngine(
             self::$parsedFiles,
             self::$maximumCachedFiles,
             self::$parser,
             self::$traverser
         );
+    }
+
+    /**
+     * @return ReflectionContext
+     */
+    public static function getReflectionContext()
+    {
+        return self::$context;
     }
 
     /**
@@ -68,7 +76,7 @@ class ReflectionEngine
      */
     public static function setMaximumCachedFiles($newLimit)
     {
-        self::$reflectionParser->setMaximumCachedFiles($newLimit);
+        self::$context->setMaximumCachedFiles($newLimit);
     }
 
     /**
@@ -80,7 +88,7 @@ class ReflectionEngine
      */
     public static function locateClassFile($fullClassName)
     {
-        return self::$reflectionParser->locateClassFile($fullClassName);
+        return self::$context->locateClassFile($fullClassName);
     }
 
     /**
@@ -92,7 +100,7 @@ class ReflectionEngine
      */
     public static function parseClass($fullClassName)
     {
-        return self::$reflectionParser->parseClass($fullClassName);
+        return self::$context->parseClass($fullClassName);
     }
 
     /**
@@ -105,7 +113,7 @@ class ReflectionEngine
      */
     public static function parseClassMethod($fullClassName, $methodName)
     {
-        return self::$reflectionParser->parseClassMethod($fullClassName, $methodName);
+        return self::$context->parseClassMethod($fullClassName, $methodName);
     }
 
     /**
@@ -118,7 +126,7 @@ class ReflectionEngine
      */
     public static function parseClassProperty($fullClassName, $propertyName)
     {
-        return self::$reflectionParser->parseClassProperty($fullClassName, $propertyName);
+        return self::$context->parseClassProperty($fullClassName, $propertyName);
     }
 
     /**
@@ -131,7 +139,7 @@ class ReflectionEngine
      */
     public static function parseFile($fileName, $fileContent = null)
     {
-        return self::$reflectionParser->parseFile($fileName, $fileContent = null);
+        return self::$context->parseFile($fileName, $fileContent = null);
     }
 
     /**
@@ -144,7 +152,7 @@ class ReflectionEngine
      */
     public static function parseFileNamespace($fileName, $namespaceName)
     {
-        return self::$reflectionParser->parseFileNamespace($fileName, $namespaceName);
+        return self::$context->parseFileNamespace($fileName, $namespaceName);
     }
 
 }

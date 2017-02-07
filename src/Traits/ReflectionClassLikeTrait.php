@@ -11,6 +11,7 @@
 namespace Go\ParserReflection\Traits;
 
 use Go\ParserReflection\ReflectionClass;
+use Go\ParserReflection\ReflectionContext;
 use Go\ParserReflection\ReflectionException;
 use Go\ParserReflection\ReflectionMethod;
 use Go\ParserReflection\ReflectionProperty;
@@ -93,6 +94,11 @@ trait ReflectionClassLikeTrait
      * @var array|ReflectionProperty[]
      */
     protected $properties;
+
+    /**
+     * @var ReflectionContext
+     */
+    private $context;
 
     /**
      * Returns the string representation of the ReflectionClass object.
@@ -345,7 +351,7 @@ trait ReflectionClassLikeTrait
     public function getMethods($filter = null)
     {
         if (!isset($this->methods)) {
-            $directMethods = ReflectionMethod::collectFromClassNode($this->classLikeNode, $this);
+            $directMethods = ReflectionMethod::collectFromClassNode($this->classLikeNode, $this, $this->context);
             $parentMethods = $this->recursiveCollect(function (array &$result, \ReflectionClass $instance, $isParent) {
                 $reflectionMethods = [];
                 foreach ($instance->getMethods() as $reflectionMethod) {
@@ -442,7 +448,7 @@ trait ReflectionClassLikeTrait
             $extendsNode = $hasExtends ? $this->classLikeNode->$extendsField : null;
             if ($extendsNode instanceof FullyQualified) {
                 $extendsName = $extendsNode->toString();
-                $parentClass = class_exists($extendsName, false) ? new parent($extendsName) : new static($extendsName);
+                $parentClass = class_exists($extendsName, false) ? new parent($extendsName) : new static($extendsName, null, $this->context);
             }
             $this->parentClass = $parentClass;
         }
@@ -461,7 +467,7 @@ trait ReflectionClassLikeTrait
     public function getProperties($filter = null)
     {
         if (!isset($this->properties)) {
-            $directProperties = ReflectionProperty::collectFromClassNode($this->classLikeNode, $this->getName());
+            $directProperties = ReflectionProperty::collectFromClassNode($this->classLikeNode, $this->getName(), $this->context);
             $parentProperties = $this->recursiveCollect(function (array &$result, \ReflectionClass $instance, $isParent) {
                 $reflectionProperties = [];
                 foreach ($instance->getProperties() as $reflectionProperty) {
@@ -929,7 +935,7 @@ trait ReflectionClassLikeTrait
      */
     private function collectSelfConstants()
     {
-        $expressionSolver = new NodeExpressionResolver($this);
+        $expressionSolver = new NodeExpressionResolver($this, $this->context);
         $localConstants   = [];
 
         // constants can be only top-level nodes in the class, so we can scan them directly
