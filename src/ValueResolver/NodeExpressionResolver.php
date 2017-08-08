@@ -119,8 +119,7 @@ class NodeExpressionResolver
         try {
             ++$this->nodeLevel;
 
-            $nodeType   = $node->getType();
-            $methodName = 'resolve' . str_replace('_', '', $nodeType);
+            $methodName = $this->getDispatchMethodFor($node);
             if (method_exists($this, $methodName)) {
                 $value = $this->$methodName($node);
             }
@@ -148,8 +147,8 @@ class NodeExpressionResolver
 
     protected function resolveScalarMagicConstMethod()
     {
-        if ($this->subject instanceof \ReflectionMethod) {
-            $fullName = $this->subject->getDeclaringClass()->getName() . '::' . $this->subject->getShortName();
+        if ($this->context instanceof \ReflectionMethod) {
+            $fullName = $this->context->getDeclaringClass()->getName() . '::' . $this->context->getShortName();
 
             return $fullName;
         }
@@ -181,13 +180,13 @@ class NodeExpressionResolver
 
     protected function resolveScalarMagicConstClass()
     {
-        if ($this->subject instanceof \ReflectionClass) {
-            return $this->subject->getName();
+        if ($this->context instanceof \ReflectionClass) {
+            return $this->context->getName();
         }
         if (method_exists($this->subject, 'getDeclaringClass')) {
             $declaringClass = $this->subject->getDeclaringClass();
             if ($declaringClass instanceof \ReflectionClass) {
-                return $declaringClass->getName();
+                return $declaringClass->name;
             }
         }
 
@@ -219,8 +218,8 @@ class NodeExpressionResolver
 
     protected function resolveScalarMagicConstTrait()
     {
-        if ($this->subject instanceof \ReflectionClass && $this->subject->isTrait()) {
-            return $this->subject->getName();
+        if ($this->context instanceof \ReflectionClass && $this->context->isTrait()) {
+            return $this->context->getName();
         }
 
         return '';
@@ -231,8 +230,6 @@ class NodeExpressionResolver
         $constantValue = null;
         $isResolved    = false;
 
-        /** @var ReflectionFileNamespace|null $fileNamespace */
-        $fileNamespace = null;
         $isFQNConstant = $node->name instanceof Node\Name\FullyQualified;
         $constantName  = $node->name->toString();
 
@@ -263,7 +260,22 @@ class NodeExpressionResolver
 
     protected function resolveExprClassConstFetch(Expr\ClassConstFetch $node)
     {
-        $refClass     = $this->fetchReflectionClass($node->class);
+        $classToReflect = $node->class;
+        if (!($classToReflect instanceof Node\Name)) {
+            $classToReflect = $this->resolve($classToReflect) ?: $classToReflect;
+            if (!is_string($classToReflect)) {
+                $reason = 'Unable';
+                if ($classToReflect instanceof Expr) {
+                    $methodName = $this->getDispatchMethodFor($classToReflect);
+                    $reason = "Method " . __CLASS__ . "::{$methodName}() not found trying";
+                }
+                throw new ReflectionException("$reason to resolve class constant.");
+            }
+            // Strings evaluated as class names are always treated as fully
+            // qualified.
+            $classToReflect = new Node\Name\FullyQualified(ltrim($classToReflect, '\\'));
+        }
+        $refClass = $this->fetchReflectionClass($classToReflect);
         $constantName = $node->name;
 
         // special handling of ::class constants
@@ -272,7 +284,7 @@ class NodeExpressionResolver
         }
 
         $this->isConstant = true;
-        $this->constantName = (string)$node->class . '::' . $constantName;
+        $this->constantName = (string)$classToReflect . '::' . $constantName;
 
         return $refClass->getConstant($constantName);
     }
@@ -435,6 +447,12 @@ class NodeExpressionResolver
     protected function resolveExprBinaryOpLogicalXor(Expr\BinaryOp\LogicalXor $node)
     {
         return $this->resolve($node->left) xor $this->resolve($node->right);
+    }
+
+    private function getDispatchMethodFor(Node $node)
+    {
+        $nodeType = $node->getType();
+        return 'resolve' . str_replace('_', '', $nodeType);
     }
 
     /**

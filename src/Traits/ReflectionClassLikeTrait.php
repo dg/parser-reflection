@@ -328,6 +328,7 @@ trait ReflectionClassLikeTrait
 
     /**
      * {@inheritdoc}
+     * @param string $name
      */
     public function getMethod($name)
     {
@@ -598,6 +599,7 @@ trait ReflectionClassLikeTrait
 
     /**
      * {@inheritdoc}
+     * @param string $name
      */
     public function hasMethod($name)
     {
@@ -628,6 +630,7 @@ trait ReflectionClassLikeTrait
 
     /**
      * {@inheritDoc}
+     * @param string $interfaceName
      */
     public function implementsInterface($interfaceName)
     {
@@ -704,7 +707,6 @@ trait ReflectionClassLikeTrait
         }
 
         $className = $this->getName();
-
         return $className === get_class($object) || is_subclass_of($object, $className);
     }
 
@@ -960,4 +962,15 @@ trait ReflectionClassLikeTrait
             }
         }
     }
+
+    /**
+     * Create a ReflectionClass for a given class name.
+     *
+     * @param string $className
+     *     The name of the class to create a reflection for.
+     *
+     * @return ReflectionClass
+     *     The apropriate reflection object.
+     */
+    abstract protected function createReflectionForClass($className);
 }

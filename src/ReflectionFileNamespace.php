@@ -89,6 +89,14 @@ class ReflectionFileNamespace
      */
     public function __construct($fileName, $namespaceName, Namespace_ $namespaceNode = null, ReflectionContext $context = null)
     {
+        if (!is_string($fileName)) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    '$fileName must be a string, but a %s was passed',
+                    gettype($fileName)
+                )
+            );
+        }
         $fileName = PathResolver::realpath($fileName);
         $this->context = $context ?: ReflectionEngine::getReflectionContext();
         if (!$namespaceNode) {
@@ -179,7 +187,7 @@ class ReflectionFileNamespace
         $comments   = $this->namespaceNode->getAttribute('comments');
 
         if ($comments) {
-            $docComment = (string) $comments[0];
+            $docComment = (string)$comments[0];
         }
 
         return $docComment;
