@@ -56,14 +56,22 @@ class ReflectionContext
 
     public function __construct(LocatorInterface $locator)
     {
+        $lexer = new Lexer(['usedAttributes' => [
+            'comments',
+            'startLine',
+            'endLine',
+            'startTokenPos',
+            'endTokenPos',
+            'startFilePos',
+            'endFilePos'
+        ]]);
+
         $refParser   = new \ReflectionClass(Parser::class);
         $isNewParser = $refParser->isInterface();
         if (!$isNewParser) {
-            $this->parser = new Parser(new Lexer(['usedAttributes' => [
-                'comments', 'startLine', 'endLine', 'startTokenPos', 'endTokenPos', 'startFilePos', 'endFilePos'
-            ]]));
+            $this->parser = new Parser($lexer);
         } else {
-            $this->parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+            $this->parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7, $lexer);
         }
 
         $this->traverser = $traverser = new NodeTraverser();
