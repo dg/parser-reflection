@@ -68,7 +68,7 @@ class ReflectionFunctionTest extends \PHPUnit_Framework_TestCase
         }
 
         if ($allMissedMethods) {
-            $this->markTestIncomplete('Methods ' . join($allMissedMethods, ', ') . ' are not implemented');
+            $this->markTestIncomplete('Methods ' . join(', ', $allMissedMethods) . ' are not implemented');
         }
     }
 

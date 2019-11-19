@@ -71,6 +71,14 @@ class ReflectionType extends BaseReflectionType
     }
 
     /**
+     * @inheritDoc
+     */
+    public function getName()
+    {
+        return $this->type;
+    }
+
+    /**
      * PHP reflection has it's own rules, so 'int' type will be displayed as 'integer', etc...
      *
      * @see https://3v4l.org/nZFiT
@@ -85,7 +93,7 @@ class ReflectionType extends BaseReflectionType
             'int'  => 'integer',
             'bool' => 'boolean'
         ];
-        $displayType = (string)$type;
+        $displayType = PHP_VERSION_ID > 70100 ? $type->getName() : (string) $type;
         if (isset($typeMap[$displayType])) {
             $displayType = $typeMap[$displayType];
         }

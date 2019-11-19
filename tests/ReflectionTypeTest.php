@@ -30,7 +30,7 @@ class ReflectionTypeTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(2, $nativeParamRefArr);
         $this->assertEquals(\ReflectionParameter::class, get_class($nativeParamRefArr[0]));
         $nativeTypeRef = $nativeParamRefArr[0]->getType();
-        $this->assertEquals('string', (string)$nativeTypeRef);
+        $this->assertEquals('string', $nativeTypeRef->getName());
         $this->assertNotContains('\\', get_class($nativeTypeRef));
         $this->assertInstanceOf(\ReflectionType::class, $nativeTypeRef);
         $this->assertEquals('string', \Go\ParserReflection\ReflectionType::convertToDisplayType($nativeTypeRef));
@@ -53,7 +53,7 @@ class ReflectionTypeTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(2, $nativeParamRefArr);
         $this->assertEquals(\ReflectionParameter::class, get_class($nativeParamRefArr[0]));
         $nativeTypeRef = $nativeParamRefArr[0]->getType();
-        $this->assertEquals('string', (string)$nativeTypeRef);
+        $this->assertEquals('string', $nativeTypeRef->getName());
         $this->assertNotContains('\\', get_class($nativeTypeRef));
         $this->assertInstanceOf(\ReflectionType::class, $nativeTypeRef);
         $this->assertEquals('string or NULL', \Go\ParserReflection\ReflectionType::convertToDisplayType($nativeTypeRef));
@@ -77,7 +77,7 @@ class ReflectionTypeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(\ReflectionParameter::class, get_class($nativeParamRefArr[0]));
         $nativeTypeRef = $nativeParamRefArr[0]->getType();
         $this->assertTrue($nativeTypeRef->allowsNull());
-        $this->assertEquals('string', (string)$nativeTypeRef);
+        $this->assertEquals('string', PHP_VERSION_ID >= 70100 ? $nativeTypeRef->getName() : (string)$nativeTypeRef);
         $this->assertNotContains('\\', get_class($nativeTypeRef));
         $this->assertInstanceOf(\ReflectionType::class, $nativeTypeRef);
         $this->assertEquals('string or NULL', \Go\ParserReflection\ReflectionType::convertToDisplayType($nativeTypeRef));
